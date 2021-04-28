@@ -60,7 +60,7 @@ function parser(tokens) {
     }
     if (match("IDENTIFIER")) {
       return {
-        type: "identifier",
+        type: "variable",
         name: previous().value,
         line: previous().line,
       };
@@ -116,13 +116,19 @@ function parser(tokens) {
     statements.push(stmt());
   }
   function stmt() {
-    if (match("IDENTIFIER")) return standardDec();
+    if (match("VOID")) return voidDec();
+    if (match("FINAL")) return finalDec();
+    if (match("CLASS")) return classDeclaration();
+    if (match("FN")) return fnDeclaration();
+    if (match("IDENTIFIER")) return idenDec();
     return statement();
   }
-  function funcDeclaration(kind) {
+  function fnDeclaration(kind) {
+    // fn Hi := () {}
     let name = peek();
     consume("IDENTIFIER", "Expected " + kind + " name");
     let line = name.line;
+    consume("COL_EQ", "Expected assignment operator");
 
     consume("LEFT_PAREN", "Expected '(' after " + kind + " name");
 
@@ -139,84 +145,81 @@ function parser(tokens) {
 
     return { type: "funcdef", line, name, params, body };
   }
-  function standardDec() {
-    let line = previous().line;
-    let name = previous().value;
-    let type = peek1().value;
-    if (type == "class") {
-      // Hello(class):= {}
-      consume("LEFT_PAREN", "Expected a '('");
-      let name = previous2();
-      consume("CLASS", "Expected a class type");
-      consume("RIGHT_PAREN", "Expected a ')'");
-      consume("COL_EQ", "Expected assignment operator");
-      let superclass = null;
-      if (match("IMPLEMENTS")) {
-        consume("IDENTIFIER", "Expected superclass name");
-        superclass = {
-          type: "variable",
-          line: previous().line,
-          name: previous().value,
-        };
-      }
-      consume("LEFT_BRACE", "Expected '{' before class body");
-      let methods = [];
-      while (!check("RIGHT_BRACE") && !isEOF()) {
-        methods.push(funcDeclaration("method"));
-      }
-      consume("RIGHT_BRACE", "Expected '}' after class body");
-      return { type: "class", line: name.line, name, superclass, methods };
-    } else if (type == "void") {
-      // Hi(void):= "Hi";
-      consume("LEFT_PAREN", "Expected a '('");
-      consume("VOID", "Expected variable type");
-      consume("RIGHT_PAREN", "Expected a ')'");
-      let value = null;
-      if (match("COL_EQ")) {
-        value = expression();
-      }
-      consume("SEMI", "Expected ';' after variable declaration");
-      return { type: "var", line, mut: type, name, value };
-    } else if (type == "final") {
-      // Hi(final):= "Hi";
-      consume("LEFT_PAREN", "Expected a '('");
-      consume("FINAL", "Expected variable type");
-      consume("RIGHT_PAREN", "Expected a ')'");
-      let value = null;
-      if (match("COL_EQ")) {
-        value = expression();
-      }
-      consume("SEMI", "Expected ';' after variable declaration");
-      return { type: "var", line, mut: type, name, value };
-    } else if (type == "fn") {
-      // Hi(fn):= () {}
-      consume("LEFT_PAREN", "Expected a '('");
-      name = previous2();
-      line = name.line;
-      let params = [];
-      consume("FN", "Expected a function type");
-      consume("RIGHT_PAREN", "Expected a ')'");
-      consume("COL_EQ", "Expected assignment operator");
-      consume("LEFT_PAREN", "Expected a '('");
-      if (!check("RIGHT_PAREN")) {
-        do {
-          params.push(peek());
-          consume("IDENTIFIER", "Expected a parameter name");
-        } while (match("COMMA"));
-      }
-      consume("RIGHT_PAREN", "Expected ')' after parameters");
-      consume("LEFT_BRACE", "Expected '{' before function body");
-      let body = block();
-      return { type: "funcdef", line, name, params, body };
-    } else {
-      type = "void";
-      let value = null;
-      if (match("COL_EQ")) {
-        value = expression();
-      }
-      consume("SEMI", "Expected ';' after variable declaration");
-      return { type: "var", line, mut: type, name, value };
+  function funcDeclaration(kind) {
+    // fn Hi := () {}
+    let name = peek();
+    consume("IDENTIFIER", "Expected " + kind + " name");
+    let line = name.line;
+    consume("LEFT_PAREN", "Expected '(' after " + kind + " name");
+
+    let params = [];
+    if (!check("RIGHT_PAREN")) {
+      do {
+        params.push(peek());
+        consume("IDENTIFIER", "Expected parameter name");
+      } while (match("COMMA"));
     }
+    consume("RIGHT_PAREN", "Expected ')' after parameters");
+    consume("LEFT_BRACE", "Expected '{' before " + kind + " body");
+    let body = block();
+
+    return { type: "funcdef", line, name, params, body };
+  }
+  function classDeclaration() {
+    let name = peek();
+    consume("IDENTIFIER", "Expected class name");
+    consume("COL_EQ", "Expected assignment operator");
+    let superclass = null;
+    if (match("IMPLEMENTS")) {
+      consume("IDENTIFIER", "Expected superclass name");
+      superclass = {
+        type: "variable",
+        line: previous().line,
+        name: previous().value,
+      };
+    }
+    consume("LEFT_BRACE", "Expected '{' before class body");
+    let methods = [];
+    while (!check("RIGHT_BRACE") && !isEOF()) {
+      methods.push(funcDeclaration("method"));
+    }
+    consume("RIGHT_BRACE", "Expected '}' after class body");
+    return { type: "class", line: name.line, name, superclass, methods };
+  }
+  function voidDec() {
+    let type = previous().value;
+    let line = peek().line;
+    let name = peek().value;
+    consume("IDENTIFIER", "Expected variable name");
+    let value = null;
+    if (match("COL_EQ")) {
+      value = expression();
+    }
+    consume("SEMI", "Expected ';' after variable declaration");
+    return { type: "var", line, mut: type, name, value };
+  }
+  function finalDec() {
+    let type = previous().value;
+    let line = peek().line;
+    let name = peek().value;
+    consume("IDENTIFIER", "Expected variable name");
+    let value = null;
+    if (match("COL_EQ")) {
+      value = expression();
+    }
+    consume("SEMI", "Expected ';' after variable declaration");
+    return { type: "var", line, mut: type, name, value };
+  }
+  function idenDec() {
+    let type = "void";
+    let line = peek().line;
+    let name = previous().value;
+    let value = null;
+    if (match("COL_EQ")) {
+      value = expression();
+    }
+    consume("SEMI", "Expected ';' after variable declaration");
+    return { type: "idenvar", line, mut: type, name, value };
   }
   function block() {
     let statements = [];

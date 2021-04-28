@@ -417,7 +417,16 @@ function interpreter(trees, penvironment = null) {
           environment.define(expr.line, expr.name, value, expr.mut);
         }
         break;
-
+      case "idenvar":
+        {
+          let value = null;
+          if (expr.value != null) {
+            value = interpret(expr.value);
+          }
+          environment.getVal(expr.line, expr.name);
+          environment.define(expr.line, expr.name, value, expr.mut);
+        }
+        break;
       case "identifier":
         return environment.getVal(expr.line, expr.name);
 

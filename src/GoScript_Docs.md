@@ -19,24 +19,24 @@ GoScript [FILE_NAME]
 # Variables:
 ## Declare and assign:
 ```javascript
-Hiya(void):= "Sup";
+void Hiya:= "Sup";
 ```
 ## Declare and assign a variable that cannot be changed:
 ```javascript
-Sup(final):= "Sup";
+final Sup:= "Sup";
 ```
 ### Variable maps:
 ```javascript
-Data(void):= { "Year": "2021", "Day": "3/23/2021" };
+void Data:= { "Year": "2021", "Day": "3/23/2021" };
 !! The map 'Data' has { Year: 2021, Day: 3/23/2021 } as its values
 ```
 ## Declare variable without setting it:
 ```javascript
- Hello(void);
+void Hello;
 ```
 # Function declaration:
 ```javascript
-Hi(fn):= (Param) {
+fn Hi:= (Param) {
     !! Your code here
 }
 ```
@@ -46,13 +46,13 @@ Hi(fn):= (Param) {
 ```
 ## Lambda:
 ```javascript
-add(void):= lambda (a, b): a + b;
+void add:= lambda (a, b): a + b;
 println(add(1, 2));
 !! Prints 3
 ```
 # Class declaration:
 ```javascript
-Main(class):= {
+class Main:= {
  init(val) {
      this.val:= val;
      println(this.val);
@@ -65,11 +65,11 @@ Main(class):= {
 ```
 ### Class Instances: 
 ```javascript
-myInstance(void):= Main("Hello");
+void myInstance:= Main("Hello");
 ```
 ### Class Implements: 
 ```javascript
-OtherMain(class):= implements Main {
+class OtherMain:= implements Main {
   init(name, age) {
     super.init(name, age);
   }
@@ -122,11 +122,11 @@ OtherMain(class):= implements Main {
  ```javascript
  += | -= | *= | /= | ^= | %= |
 
- !* Sup(void) := "1" | !Sup += 5 Returns 6 | !Sup -= 5 Returns -4 | !Sup *= 5 Returns 5 | !Sup /= 5 Returns 1/5 | !Sup %= 5 Returns 1 | !Sup ^= 5 Returns 1 *!
+ !* Sup := "1" | !Sup += 5 Returns 6 | !Sup -= 5 Returns -4 | !Sup *= 5 Returns 5 | !Sup /= 5 Returns 1/5 | !Sup %= 5 Returns 1 | !Sup ^= 5 Returns 1 *!
 ```
  # String Concactation:
  ```javascript
-World(void):= "World";
+void World:= "World";
 println("Hello " + World + "!");
 ```
  ## Escape frontslashes:
@@ -155,7 +155,7 @@ println("Hello " + World + "!");
 ```
  # Ask:
  ```javascript
- Greeting(void):= ask("What is your name");
+ void Greeting:= ask("What is your name");
   !! The answer to ask is stored in the variable "Greeting" 
 ```
  # Loops:
@@ -188,8 +188,8 @@ while(true) {
  ```
  # Ternary:
 ```javascript
-n(final):= 2;
-output(final):= n == 1 | n == 2 ? 1 : 2;
+void n:= 2;
+void output:= n == 1 | n == 2 ? 1 : 2;
 println(output);
 ```
  # Return Statement:
@@ -202,7 +202,7 @@ rtn
 ```javascript
 #include("Hash");
 !! Including Hash Module
-Hi(void):= Hash.get("Hi");
+void Hi:= Hash.get("Hi");
 !! Using Hash Module
 println(Hi);
 !! Expected output: 2337
@@ -211,7 +211,7 @@ println(Hi);
 ```javascript
 !! Including the Fiber module:
 #include("Fiber");
-Hi(void):= Fiber();
+void Hi:= Fiber();
 !! Creating a new Fiber and setting the value to "":
 !Hi.new("Hi", "");
 !! Changing the value to "Hello World!":
@@ -227,7 +227,7 @@ println(Hi.length("Hi"));
 ```javascript
 #include("List");
 !! Including the List Module
-Hi(void):= List();
+void Hi:= List();
 !Hi.new("Hi");
 !! Creating a new List and setting the name to "Hi"
 !Hi.insert("Hi", 0, "Hello");
@@ -254,11 +254,11 @@ println(Hi.length("Hi"));
 # Projects:
 ## Fibonacci Sequence:
 ```javascript
-fib(fn):= (n) {
+fn fib := (n) {
   if (n <= 1) rtn 1;
   rtn fib(n - 1) + fib(n - 2);
 }
-n(void):= ask("How many numbers?");
+void n:= ask("How many numbers?");
 repeat(i:0:n:1) {
   println(fib(i));
 }
