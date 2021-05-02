@@ -47,6 +47,13 @@ class Break extends Error {
   }
 }
 
+class Continue extends Error {
+  constructor() {
+    super();
+    this.name = "continue";
+  }
+}
+
 class UserCallable extends FuncCallable {
   constructor(decl, closure, interpretBlock, isConstruct = false) {
     super(
@@ -136,4 +143,5 @@ module.exports = {
   NativeCallable,
   Return,
   Break,
+  Continue,
 };

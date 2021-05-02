@@ -3,7 +3,7 @@ const lexer = require("./Lexer");
 const parser = require("./Parser");
 const interpreter = require("./Interpreter");
 function GoScript_Init() {
-  let VERSION = "3.9.8";
+  let VERSION = "3.9.9";
   let code;
   let file;
   if (process.argv[3]) {
@@ -24,6 +24,7 @@ function GoScript_Init() {
             );
           }
         } else {
+          let benchmark = {};
           code = fs.readFileSync(file, "utf-8");
           let tokens = lexer(code);
           // console.log("Tokens:", tokens);
@@ -34,10 +35,9 @@ function GoScript_Init() {
           console.log(
             "\x1b[34m%s\x1b[0m",
             "\nRunning GoScript,",
-            `Version: ${VERSION}\n_____________________________\n`
+            `Version: ${VERSION}\n________________________________\n`
           );
           let output = interpreter(trees);
-          console.log("");
         }
       });
     }

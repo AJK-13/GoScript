@@ -7,6 +7,7 @@ const {
   UserCallable,
   Return,
   Break,
+  Continue,
   LambdaFunc,
 } = require("./Functions");
 const { ClassCallable, ClassInstance } = require("./Classes");
@@ -363,6 +364,9 @@ function interpreter(trees, penvironment = null) {
       case "breakloop": {
         throw new Break();
       }
+      case "continueloop": {
+        throw new Continue();
+      }
 
       // Logic
       case "ifstatement":
@@ -585,11 +589,7 @@ function interpreter(trees, penvironment = null) {
         }
         break;
 
-      case "number":
-        return expr.value;
-      case "string":
-        return expr.value;
-      case "boolean":
+      case "literal":
         return expr.value;
 
       // Operations
@@ -606,7 +606,7 @@ function interpreter(trees, penvironment = null) {
       }
 
       case "typechange": {
-        if (expr.expr.type == "identifier" && expr.newtype.value == "NaV") {
+        if (expr.expr.type == "identifier" && expr.newtype.value == "nil") {
           if (environment.values[expr.expr.name] !== undefined)
             return interpret(expr.expr);
           else return null;
@@ -626,7 +626,7 @@ function interpreter(trees, penvironment = null) {
               error(expr.line, "Type cannot be converted to number");
             return Number(value);
 
-          case "NaV":
+          case "nil":
             return value;
         }
       }
@@ -712,7 +712,7 @@ function interpreter(trees, penvironment = null) {
   }
 
   function stringify(val) {
-    if (val == null) return "NaV";
+    if (val == null) return "nil";
 
     return val.toString();
   }

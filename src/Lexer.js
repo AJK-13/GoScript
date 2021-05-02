@@ -17,7 +17,7 @@ let reserved = [
   "superClass",
 
   // Values
-  "NaV",
+  "nil",
   "true",
   "false",
 
@@ -26,9 +26,10 @@ let reserved = [
   "el",
 
   // Loops
-  "repeat",
+  "for",
   "while",
   "break",
+  "continue",
 
   // Print
   "println",

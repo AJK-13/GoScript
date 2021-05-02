@@ -28,35 +28,34 @@ function parser(tokens) {
   function peek() {
     return tokens[index];
   }
-  function peek1() {
-    return tokens[index + 1];
-  }
   function peek2() {
     return tokens[index + 2];
   }
   function previous() {
     return tokens[index - 1];
   }
-  function previous2() {
-    return tokens[index - 2];
-  }
-  function previous7() {
-    return tokens[index - 7];
-  }
   function previous6() {
     return tokens[index - 6];
   }
   function primary() {
     if (match("FALSE"))
-      return { type: "boolean", value: false, line: previous().line };
+      return { type: "literal", value: false, line: previous().line };
     if (match("TRUE"))
-      return { type: "boolean", value: true, line: previous().line };
-    if (match("NAV"))
-      return { type: "boolean", value: null, line: previous().line };
+      return { type: "literal", value: true, line: previous().line };
+    if (match("NIL"))
+      return { type: "literal", value: null, line: previous().line };
     if (match("NUMBER")) {
-      return { type: "number", value: previous().value, line: previous().line };
+      return {
+        type: "literal",
+        value: previous().value,
+        line: previous().line,
+      };
     } else if (match("STRING")) {
-      return { type: "string", value: previous().value, line: previous().line };
+      return {
+        type: "literal",
+        value: previous().value,
+        line: previous().line,
+      };
     }
     if (match("IDENTIFIER")) {
       return {
@@ -124,11 +123,10 @@ function parser(tokens) {
     return statement();
   }
   function fnDeclaration(kind) {
-    // fn Hi := () {}
+    // fn Hi() := {}
     let name = peek();
     consume("IDENTIFIER", "Expected " + kind + " name");
     let line = name.line;
-    consume("COL_EQ", "Expected assignment operator");
 
     consume("LEFT_PAREN", "Expected '(' after " + kind + " name");
 
@@ -140,6 +138,7 @@ function parser(tokens) {
       } while (match("COMMA"));
     }
     consume("RIGHT_PAREN", "Expected ')' after parameters");
+    consume("COL_EQ", "Expected assignment operator");
     consume("LEFT_BRACE", "Expected '{' before " + kind + " body");
     let body = block();
 
@@ -235,8 +234,9 @@ function parser(tokens) {
     if (match("IF")) return ifStatement();
     if (match("RTN")) return returnStatement();
     if (match("WHILE")) return whileStatement();
-    if (match("REPEAT")) return repeatStatement();
+    if (match("FOR")) return forStatement();
     if (match("BREAK")) return breakStatement();
+    if (match("CONTINUE")) return continueStatement();
     if (match("DOLLAR")) return type_change();
     if (match("LEFT_BRACE"))
       return { type: "block", line: previous().line, block: block() };
@@ -244,21 +244,58 @@ function parser(tokens) {
     return expressionStatement();
   }
   function breakStatement() {
-    consume("SEMI", "Expect ';' after break statement.");
+    consume("SEMI", "Expected ';' after break statement");
     return { type: "breakloop", line: previous().line };
   }
-  function repeatStatement() {
-    consume("LEFT_PAREN", "Expect '(' after 'repeat' loop");
+  function continueStatement() {
+    consume("SEMI", "Expected ';' after continue statement");
+    return { type: "continueloop", line: previous().line };
+  }
+  function forStatement() {
+    consume("LEFT_PAREN", "Expect '(' after 'for'.");
     let line = previous().line;
-    let params = [];
-    if (!check("RIGHT_PAREN")) {
-      do {
-        params.push(expression());
-      } while (match("COL"));
+
+    let initializer;
+    if (match("SEMI")) {
+      initializer = null;
+    } else if (match("VOID")) {
+      initializer = voidDec();
+    } else if (match("FINAL")) {
+      initializer = finalDec();
+    } else {
+      initializer = expressionStatement();
     }
-    consume("RIGHT_PAREN", "Expect ')' after arguments");
+
+    let condition = null;
+    if (!check("SEMI")) {
+      condition = expression();
+    }
+    consume("SEMI", "Expect ',' after loop condition.");
+
+    let increment = null;
+    if (!check("RIGHT_PAREN")) {
+      increment = expression();
+    }
+    consume("RIGHT_PAREN", "Expect ')' after for clauses.");
+
     let body = statement();
-    return { type: "repeat", params, line, body };
+
+    if (increment != null) {
+      body = {
+        type: "block",
+        line,
+        block: [body, { type: "expr", line, expr: increment }],
+      };
+    }
+
+    if (condition == null) condition = { type: "literal", value: true, line };
+    body = { type: "whileloop", line, condition, body };
+
+    if (initializer != null) {
+      body = { type: "block", line, block: [initializer, body] };
+    }
+
+    return body;
   }
   function whileStatement() {
     consume("LEFT_PAREN", "Expected '(' after 'while'");

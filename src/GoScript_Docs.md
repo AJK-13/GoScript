@@ -160,15 +160,11 @@ println("Hello " + World + "!");
 ```
  # Loops:
 
- ## Repeat Loop:
+ ## For Loop:
  ```javascript 
- repeat(i:0:20:1) {
-println("This is true!");
- }
-!! Concept is like this: 
-    repeat([VARIABLE_NAME]:[STARTING_NUM]:[ENDING_NUM]:[INCREMENT]) {
-        !! Your code here
-    }
+for(void i := 0; i < 10; i++) {
+    println(i);
+}
 ```
 ## While Loop:
 ```javascript
@@ -254,12 +250,12 @@ println(Hi.length("Hi"));
 # Projects:
 ## Fibonacci Sequence:
 ```javascript
-fn fib := (n) {
+fn fib(n) := {
   if (n <= 1) rtn 1;
   rtn fib(n - 1) + fib(n - 2);
 }
 void n:= ask("How many numbers?");
-repeat(i:0:n:1) {
-  println(fib(i));
+for(void i := 0; i < n; i++) {
+    println(fib(i));
 }
 ```
