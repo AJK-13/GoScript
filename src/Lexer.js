@@ -14,7 +14,7 @@ let reserved = [
   "class",
   "this",
   "implements",
-  "superClass",
+  "super",
 
   // Values
   "nil",

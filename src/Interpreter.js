@@ -194,7 +194,7 @@ function interpreter(trees, penvironment = null) {
           if (expr.superclass != null) {
             superclass = interpret(expr.superclass);
             if (!(superclass instanceof ClassCallable)) {
-              error(expr.line, "Superclass must be a class");
+              error(expr.line, "Super must be a class");
             }
           }
 
@@ -202,7 +202,7 @@ function interpreter(trees, penvironment = null) {
 
           if (expr.superclass != null) {
             environment = new Environment(environment);
-            environment.define(expr.line, "superClass", superclass, "var");
+            environment.define(expr.line, "super", superclass, "var");
           }
 
           let methods = {};
@@ -232,7 +232,7 @@ function interpreter(trees, penvironment = null) {
         break;
 
       case "superclass": {
-        let superclass = environment.getVal(expr.line, "superClass");
+        let superclass = environment.getVal(expr.line, "super");
         let obj = environment.getVal(expr.line, "this");
 
         let method = superclass.findMethod(expr.method.value);

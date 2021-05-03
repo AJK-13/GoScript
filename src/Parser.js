@@ -101,11 +101,11 @@ function parser(tokens) {
       return call();
     }
     if (match("THIS")) return { type: "this", line: previous().line };
-    if (match("SUPERCLASS")) {
+    if (match("SUPER")) {
       let keyword = previous();
-      consume("DOT", "Expect '.' after 'superclass'");
+      consume("DOT", "Expect '.' after 'super'");
       let method = peek();
-      consume("IDENTIFIER", "Expect superclass method name");
+      consume("IDENTIFIER", "Expect super method name");
       return { type: "superclass", keyword, method, line: method.line };
     }
     error(peek().line, "Unexpected token '" + peek().value + "'");
@@ -170,7 +170,7 @@ function parser(tokens) {
     consume("COL_EQ", "Expected assignment operator");
     let superclass = null;
     if (match("IMPLEMENTS")) {
-      consume("IDENTIFIER", "Expected superclass name");
+      consume("IDENTIFIER", "Expected super name");
       superclass = {
         type: "variable",
         line: previous().line,
