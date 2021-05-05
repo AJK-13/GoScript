@@ -13,10 +13,15 @@ function resolver(trees) {
       switch (expr.type) {
         case "return":
           if (current.construct)
-            error(expr.line, "Constructors cannot have return values");
+            error(
+              expr.line,
+              "Runtime Error",
+              "Constructors cannot have return values"
+            );
           if (!current.func && !current.clss)
             error(
               expr.line,
+              "Runtime Error",
               "Return statements can only be in functions and methods"
             );
           break;
@@ -49,7 +54,11 @@ function resolver(trees) {
           expr.superclass != null &&
           expr.name.value == expr.superclass.name
         ) {
-          error(expr.line, "A class cannot inherit from itself");
+          error(
+            expr.line,
+            "Runtime Error",
+            "A class cannot inherit from itself"
+          );
         }
 
         for (const method of expr.methods) {
@@ -74,7 +83,11 @@ function resolver(trees) {
 
       case "superclass":
         if (!current.clss)
-          error(expr.line, "'superClass' can only be inside methods");
+          error(
+            expr.line,
+            "Runtime Error",
+            "'superClass' can only be inside methods"
+          );
         break;
 
       case "call":
@@ -87,6 +100,7 @@ function resolver(trees) {
         if (!current.func)
           error(
             expr.line,
+            "Runtime Error",
             "Return statements can only be in functions and methods"
           );
         break;

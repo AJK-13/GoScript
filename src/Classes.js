@@ -60,7 +60,7 @@ class ClassInstance {
     let method = this.classCall.findMethod(name);
     if (method != null) return method.bind(this);
 
-    error(line, "Undefined property '" + name + "'");
+    error(line, "Runtime Error", "Undefined property '" + name + "'");
   }
 
   setVal(name, value) {

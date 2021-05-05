@@ -3,7 +3,7 @@ const lexer = require("./Lexer");
 const parser = require("./Parser");
 const interpreter = require("./Interpreter");
 function GoScript_Init() {
-  let VERSION = "3.9.9";
+  let VERSION = "4.0.0";
   let code;
   let file;
   if (process.argv[3]) {

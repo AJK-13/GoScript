@@ -192,7 +192,7 @@ function lexer(code) {
             }
 
             if (code[index + 1] != "*" && code[index + 2] != "!") {
-              error(line, "Unterminated multi-line comment.");
+              error(line, "Parse Error", "Unterminated multi-line comment.");
             }
 
             index += 2;
@@ -268,7 +268,11 @@ function lexer(code) {
 
                   case "u":
                     if (code[index + 1] != "{")
-                      error(line, "Expect '{' after unicode escape sequence.");
+                      error(
+                        line,
+                        "Parse Error",
+                        "Expect '{' after unicode escape sequence."
+                      );
                     index++;
 
                     let hex = "";
@@ -279,7 +283,11 @@ function lexer(code) {
                     }
 
                     if (code[index + 1] != "}")
-                      error(line, "Expect '}' after unicode escape code.");
+                      error(
+                        line,
+                        "Parse Error",
+                        "Expect '}' after unicode escape code."
+                      );
                     index++;
 
                     text += String.fromCharCode(parseInt(hex, 16));
@@ -300,6 +308,7 @@ function lexer(code) {
                   default:
                     error(
                       line,
+                      "Parse Error",
                       "Invalid escape sequence '" + code[index] + "'"
                     );
                 }
@@ -310,7 +319,7 @@ function lexer(code) {
             }
 
             if (code[index + 1] != strtype) {
-              error(line, "Unterminated string");
+              error(line, "Parse Error", "Unterminated string");
             }
 
             index++;
@@ -319,7 +328,7 @@ function lexer(code) {
           }
           break;
         default:
-          error(line, `Unexpected character ${code[index]}`);
+          error(line, "Parse Error", `Unexpected character ${code[index]}`);
           break;
       }
     }

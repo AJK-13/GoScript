@@ -75,7 +75,7 @@ class UserCallable extends FuncCallable {
           if (isConstruct) return environment.getVal(0, "this");
         } catch (e) {
           if (e.name != "rtn") {
-            error(decl.line, "Too much recursion");
+            error(decl.line, "Runtime Error", "Too much recursion");
           }
 
           return e.message;

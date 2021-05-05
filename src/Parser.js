@@ -5,7 +5,8 @@ function parser(tokens) {
     return tokens[index] || {};
   }
   function consume(name, expect) {
-    if (tokens[index].name != name) error(tokens[index].line, expect);
+    if (tokens[index].name != name)
+      error(tokens[index].line, "Parse Error", expect);
     index++;
     return tokens[index];
   }
@@ -108,7 +109,11 @@ function parser(tokens) {
       consume("IDENTIFIER", "Expect super method name");
       return { type: "superclass", keyword, method, line: method.line };
     }
-    error(peek().line, "Unexpected token '" + peek().value + "'");
+    error(
+      peek().line,
+      "Parse Error",
+      "Unexpected token '" + peek().value + "'"
+    );
   }
   let statements = [];
   while (!isEOF()) {
@@ -462,7 +467,7 @@ function parser(tokens) {
         };
       }
 
-      error(equals.line, "Invalid assignment target");
+      error(equals.line, "Parse Error", "Invalid assignment target");
     }
 
     return expr;

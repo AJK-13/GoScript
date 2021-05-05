@@ -9,7 +9,7 @@ class Environment {
   getVal(line, name) {
     if (this.values[name] !== undefined) return this.values[name].value;
     if (this.previous != null) return this.previous.getVal(line, name);
-    error(line, name + " is not defined");
+    error(line, "Runtime Error", name + " is not defined");
   }
 
   checkVal(line, name) {
@@ -25,12 +25,12 @@ class Environment {
 
   define(line, name, value, mut) {
     if (this.getMut(name) == "final")
-      error(line, `Final ${name} is already defined`);
+      error(line, "Runtime Error", `Final ${name} is already defined`);
     this.values[name] = { value, mut };
   }
   assign(line, name, value) {
     if (this.getMut(name) == "final") {
-      error(line, "Assignment to constant " + name);
+      error(line, "Runtime Error", "Assignment to constant " + name);
       return;
     }
 
@@ -44,7 +44,7 @@ class Environment {
       return;
     }
 
-    error(line, name + " is not defined");
+    error(line, "Runtime Error", name + " is not defined");
   }
 }
 

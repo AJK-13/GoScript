@@ -87,7 +87,7 @@ function interpreter(trees, penvironment = null) {
   function checkType(line, err, value, ...types) {
     if (types.includes(typeof value)) return;
 
-    error(line, err);
+    error(line, "Runtime Error", err);
   }
 
   function isTruthy(object) {
@@ -141,13 +141,18 @@ function interpreter(trees, penvironment = null) {
         }
 
         if (!(call instanceof FuncCallable)) {
-          error(expr.line, "Can only call functions and classes");
+          error(
+            expr.line,
+            "Runtime Error",
+            "Can only call functions and classes"
+          );
         }
 
         let func = call;
         if (args.length != func.arity) {
           error(
             expr.line,
+            "Runtime Error",
             `Expected ${func.arity} arguments but got ${args.length}`
           );
         }
@@ -161,14 +166,18 @@ function interpreter(trees, penvironment = null) {
           return obj.getVal(expr.line, expr.name.value);
         }
 
-        error(expr.line, "Only implementations have properties");
+        error(
+          expr.line,
+          "Runtime Error",
+          "Only implementations have properties"
+        );
       }
 
       case "accessorset": {
         let obj = interpret(expr.obj);
 
         if (!(obj instanceof ClassInstance)) {
-          error(expr.line, "Only implementations have fields");
+          error(expr.line, "Runtime Error", "Only implementations have fields");
         }
 
         let value = interpret(expr.value);
@@ -194,7 +203,7 @@ function interpreter(trees, penvironment = null) {
           if (expr.superclass != null) {
             superclass = interpret(expr.superclass);
             if (!(superclass instanceof ClassCallable)) {
-              error(expr.line, "Super must be a class");
+              error(expr.line, "Runtime Error", "Super must be a class");
             }
           }
 
@@ -238,7 +247,11 @@ function interpreter(trees, penvironment = null) {
         let method = superclass.findMethod(expr.method.value);
 
         if (method == null) {
-          error(expr.line, "Undefined property '" + expr.method.value + "'");
+          error(
+            expr.line,
+            "Runtime Error",
+            "Undefined property '" + expr.method.value + "'"
+          );
         }
 
         return method.bind(obj);
@@ -623,7 +636,11 @@ function interpreter(trees, penvironment = null) {
 
           case "number":
             if (isNaN(value))
-              error(expr.line, "Type cannot be converted to number");
+              error(
+                expr.line,
+                "Runtime Error",
+                "Type cannot be converted to number"
+              );
             return Number(value);
 
           case "nil":
