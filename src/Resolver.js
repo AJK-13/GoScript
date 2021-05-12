@@ -63,7 +63,7 @@ function resolver(trees) {
 
         for (const method of expr.methods) {
           current.clss = true;
-          if (method.name.value == "construct") current.construct = true;
+          if (method.name.value == "init") current.construct = true;
 
           resolveBlock(method.body);
           current.construct = false;

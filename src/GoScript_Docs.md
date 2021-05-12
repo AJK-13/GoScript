@@ -19,42 +19,47 @@ GoScript [FILE_NAME]
 # Variables:
 ## Declare and assign:
 ```javascript
-void Hiya:= "Sup";
+void Hiya := "Sup";
 ```
 ## Declare and assign a variable that cannot be changed:
 ```javascript
-final Sup:= "Sup";
+final Sup := "Sup";
 ```
 ### Variable maps:
 ```javascript
-void Data:= { "Year": "2021", "Day": "3/23/2021" };
+void Data := { "Year": "2021", "Day": "3/23/2021" };
 !! The map 'Data' has { Year: 2021, Day: 3/23/2021 } as its values
 ```
 ## Declare variable without setting it:
 ```javascript
 void Hello;
 ```
+## Change the value of a variable:
+```javascript
+Hiya := "Sup";
+!! The variable 'Hiya' must be defined previously
+```
 # Function declaration:
 ```javascript
-fn Hi:= (Param) {
+fn Hi := (Param) {
     !! Your code here
 }
 ```
 ## Calling a function:
 ```javascript
-!Hi("Param");
+Hi("Param");
 ```
 ## Lambda:
 ```javascript
-void add:= lambda (a, b): a + b;
+void add := lambda (a, b): a + b;
 println(add(1, 2));
 !! Prints 3
 ```
 # Class declaration:
 ```javascript
-class Main:= {
+class Main := {
  init(val) {
-     this.val:= val;
+     this.val := val;
      println(this.val);
  }
  !! Adding Methods To A Class
@@ -65,7 +70,7 @@ class Main:= {
 ```
 ### Class Instances: 
 ```javascript
-void myInstance:= Main("Hello");
+void myInstance := Main("Hello");
 ```
 ### Class Implements: 
 ```javascript
@@ -77,11 +82,11 @@ class OtherMain:= implements Main {
 ```
 ### Calling a class:
 ```javascript
-!Main("World");
+Main("World");
 ```
 ### Calling a class Method:
 ```javascript
-!myInstance.Greet("Ayush");
+myInstance.Greet("Ayush");
 ```
 # Create a comment:
 ```javascript

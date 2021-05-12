@@ -65,6 +65,12 @@ function parser(tokens) {
         line: previous().line,
       };
     }
+
+    if (match("LEFT_PAREN")) {
+      let expr = expression();
+      consume("RIGHT_PAREN", "Expected ')' after expression.");
+      return { type: "grouping", expr, line: previous().line };
+    }
     if (match("ASK")) {
       return {
         type: "variable",
@@ -97,10 +103,6 @@ function parser(tokens) {
         line: previous().line,
       };
     }
-    if (match("BANG")) {
-      // !Hello("Hiii");
-      return call();
-    }
     if (match("THIS")) return { type: "this", line: previous().line };
     if (match("SUPER")) {
       let keyword = previous();
@@ -124,7 +126,6 @@ function parser(tokens) {
     if (match("FINAL")) return finalDec();
     if (match("CLASS")) return classDeclaration();
     if (match("FN")) return fnDeclaration();
-    if (match("IDENTIFIER")) return idenDec();
     return statement();
   }
   function fnDeclaration(kind) {
@@ -214,17 +215,6 @@ function parser(tokens) {
     consume("SEMI", "Expected ';' after variable declaration");
     return { type: "var", line, mut: type, name, value };
   }
-  function idenDec() {
-    let type = "void";
-    let line = peek().line;
-    let name = previous().value;
-    let value = null;
-    if (match("COL_EQ")) {
-      value = expression();
-    }
-    consume("SEMI", "Expected ';' after variable declaration");
-    return { type: "idenvar", line, mut: type, name, value };
-  }
   function block() {
     let statements = [];
 
@@ -242,7 +232,6 @@ function parser(tokens) {
     if (match("FOR")) return forStatement();
     if (match("BREAK")) return breakStatement();
     if (match("CONTINUE")) return continueStatement();
-    if (match("DOLLAR")) return type_change();
     if (match("LEFT_BRACE"))
       return { type: "block", line: previous().line, block: block() };
 

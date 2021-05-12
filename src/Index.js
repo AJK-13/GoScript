@@ -2,13 +2,12 @@ const fs = require("fs");
 const lexer = require("./Lexer");
 const parser = require("./Parser");
 const interpreter = require("./Interpreter");
+const prompt = require("prompt-sync")();
 function GoScript_Init() {
   let VERSION = "4.0.0";
-  let code;
-  let file;
-  if (process.argv[3]) {
-    file = process.argv[3];
-  } else {
+  if (process.argv.length > 2) {
+    let code;
+    let file;
     file = process.argv[2];
     if (file == "-v") {
       console.log("\x1b[34m%s\x1b[0m", "\nGoScript:", `v${VERSION}`);
@@ -27,11 +26,7 @@ function GoScript_Init() {
           let benchmark = {};
           code = fs.readFileSync(file, "utf-8");
           let tokens = lexer(code);
-          // console.log("Tokens:", tokens);
           let trees = parser(tokens);
-          // console.log(
-          // "Abstract Syntax Tree: " + JSON.stringify(trees, null, 2)
-          // );
           console.log(
             "\x1b[34m%s\x1b[0m",
             "\nRunning GoScript,",
@@ -40,6 +35,13 @@ function GoScript_Init() {
           let output = interpreter(trees);
         }
       });
+    }
+  } else {
+    for (var i = 0; i < Infinity; i++) {
+      let code = prompt("> ");
+      let tokens = lexer(code);
+      let trees = parser(tokens);
+      let output = interpreter(trees);
     }
   }
 }
