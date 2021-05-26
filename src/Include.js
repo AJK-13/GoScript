@@ -1,4 +1,4 @@
-const error = require("./error");
+const error = require("./Error");
 const fs = require("fs");
 const { exit } = require("process");
 function include(libname, globals, interpretBlock, interpreter) {
