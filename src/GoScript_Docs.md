@@ -5,7 +5,7 @@
 # 
 ## Run the file: 
 ```javascript
-node src/index.js GoScript [FILE_NAME]
+node src/index.js GoScript [LOCAL_FILE_PATH]
 ```
 ## or:
 ### Add this to your .zshrc or .bashrc file:
@@ -14,7 +14,7 @@ alias GoScript="node src/index.js $1"
 ```
 ### Then run 
 ```javascript
-GoScript [FILE_NAME]
+GoScript [LOCAL_FILE_PATH]
 ```
 # Variables:
 ## Declare and assign:
@@ -131,7 +131,7 @@ myInstance.Greet("Ayush");
 ```
  # String Concactation:
  ```javascript
-void World:= "World";
+void World := "World";
 println("Hello " + World + "!");
 ```
  ## Escape frontslashes:
@@ -160,7 +160,7 @@ println("Hello " + World + "!");
 ```
  # Ask:
  ```javascript
- void Greeting:= ask("What is your name");
+ void Greeting := ask("What is your name");
   !! The answer to ask is stored in the variable "Greeting" 
 ```
  # Loops:
@@ -189,8 +189,8 @@ while(true) {
  ```
  # Ternary:
 ```javascript
-void n:= 2;
-void output:= n == 1 | n == 2 ? 1 : 2;
+void n := 2;
+void output := n == 1 | n == 2 ? 1 : 2;
 println(output);
 ```
  # Return Statement:
@@ -203,7 +203,7 @@ rtn
 ```javascript
 #include("Hash");
 !! Including Hash Module
-void Hi:= Hash.get("Hi");
+void Hi := Hash.get("Hi");
 !! Using Hash Module
 println(Hi);
 !! Expected output: 2337
@@ -212,11 +212,11 @@ println(Hi);
 ```javascript
 !! Including the Fiber module:
 #include("Fiber");
-void Hi:= Fiber();
+void Hi := Fiber();
 !! Creating a new Fiber and setting the value to "":
-!Hi.new("Hi", "");
+Hi.new("Hi", "");
 !! Changing the value to "Hello World!":
-!Hi.new("Hi", "Hello World!");
+Hi.new("Hi", "Hello World!");
 !! Prints "Hello World!":
 println(Hi.getAll("Hi"));
 !! Prints "H":
@@ -228,21 +228,21 @@ println(Hi.length("Hi"));
 ```javascript
 #include("List");
 !! Including the List Module
-void Hi:= List();
-!Hi.new("Hi");
+void Hi := List();
+Hi.new("Hi");
 !! Creating a new List and setting the name to "Hi"
-!Hi.insert("Hi", 0, "Hello");
-!Hi.insert("Hi", 0, "Hello");
-!Hi.insert("Hi", 1, "Hi");
-!Hi.insert("Hi", 2, "Ello");
-!Hi.insert("Hi", 3, "Hiya");
+Hi.insert("Hi", 0, "Hello");
+Hi.insert("Hi", 0, "Hello");
+Hi.insert("Hi", 1, "Hi");
+Hi.insert("Hi", 2, "Ello");
+Hi.insert("Hi", 3, "Hiya");
 !! Inserting new elements at a certain index
 println(Hi.getAll("Hi"));
 !! Prints "Hello,Hi,Ello,Hiya"
 !! To remove a value you can do either: 
-!Hi.remove("Hi", "Hi");
+Hi.remove("Hi", "Hi");
 !! Or:
-!Hi.remove("Hi", 1);
+Hi.remove("Hi", 1);
 !! They both remove "Hi";
 println(Hi.getAll("Hi"));
 !! Prints "Hello,Ello,Hiya"
@@ -259,7 +259,7 @@ fn fib(n) := {
   if (n <= 1) rtn 1;
   rtn fib(n - 1) + fib(n - 2);
 }
-void n:= ask("How many numbers?");
+void n := ask("How many numbers?");
 for(void i := 0; i < n; i++) {
     println(fib(i));
 }
