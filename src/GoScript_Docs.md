@@ -27,7 +27,7 @@ final Sup := "Sup";
 ```
 ### Variable maps:
 ```javascript
-void Data := { "Year": "2021", "Day": "3/23/2021" };
+void Data := { "Year": "2021", "Day": "3/23/2021" }; 
 !! The map 'Data' has { Year: 2021, Day: 3/23/2021 } as its values
 ```
 ## Declare variable without setting it:
@@ -41,7 +41,7 @@ Hiya := "Sup";
 ```
 # Function declaration:
 ```javascript
-fn Hi := (Param) {
+fn Hi(Param) := {
     !! Your code here
 }
 ```
@@ -52,19 +52,18 @@ Hi("Param");
 ## Lambda:
 ```javascript
 void add := lambda (a, b): a + b;
-println(add(1, 2));
-!! Prints 3
+Println(add(1, 2)); !! => 3
 ```
 # Class declaration:
 ```javascript
 class Main := {
  init(val) {
      this.val := val;
-     println(this.val);
+     Println(this.val);
  }
  !! Adding Methods To A Class
  Greet(name) {
-     println("Hello, " + name);
+     Println("Hello, " + name);
  }
 }
 ```
@@ -132,7 +131,7 @@ myInstance.Greet("Ayush");
  # String Concactation:
  ```javascript
 void World := "World";
-println("Hello " + World + "!");
+Println("Hello " + World + "!");
 ```
  ## Escape frontslashes:
  To escape a character use 
@@ -146,35 +145,33 @@ println("Hello " + World + "!");
  # Logging to console:
  ## With Newline:
  ```javascript
-   println("Hello World");
-   !! Logs Hello World to console
+   Println("Hello World"); !! => Hello World
    ```
 ## Without Newline:
 ```javascript
-    print("Hello World");
-    !! Logs Hello World to console without adding a new line
+    Print("Hello World"); !! => Hello World
+    !! No new line
 ```
 # Logging to the console with colors:
 ```javascript
-  println("\e[93mColor\e[0m vs No Color");
+  Println("\e[93mColor\e[0m vs No Color");
 ```
  # Ask:
  ```javascript
- void Greeting := ask("What is your name");
-  !! The answer to ask is stored in the variable "Greeting" 
+ void Greeting := Ask("What is your name"); !! The answer to Ask is stored in the variable "Greeting" 
 ```
  # Loops:
 
  ## For Loop:
  ```javascript 
 for(void i := 0; i < 10; i++) {
-    println(i);
+    Println(i);
 }
 ```
 ## While Loop:
 ```javascript
 while(true) {
-  println("hi");
+  Println("hi");
 }
 ```
  # if / el if / el:
@@ -191,7 +188,7 @@ while(true) {
 ```javascript
 void n := 2;
 void output := n == 1 | n == 2 ? 1 : 2;
-println(output);
+Println(output);
 ```
  # Return Statement:
 ```javascript
@@ -201,55 +198,40 @@ rtn
 # Stdlib:
 ## Hash: 
 ```javascript
-#include("Hash");
-!! Including Hash Module
-void Hi := Hash.get("Hi");
-!! Using Hash Module
-println(Hi);
-!! Expected output: 2337
+#Include("Hash"); !! Including Hash Module
+void Hi := Hash.get("Hi"); !! Using Hash Module
+Println(Hi); !! => 2337
 ```
 ## Fiber:
 ```javascript
-!! Including the Fiber module:
-#include("Fiber");
-void Hi := Fiber();
-!! Creating a new Fiber and setting the value to "":
-Hi.new("Hi", "");
-!! Changing the value to "Hello World!":
+#Include("Fiber"); !! Including the Fiber Module
+void Hi := Fiber(); !! Creating a new Fiber and setting the value to "":
+Hi.new("Hi", ""); !! Changing the value to "Hello World!":
 Hi.new("Hi", "Hello World!");
-!! Prints "Hello World!":
-println(Hi.getAll("Hi"));
-!! Prints "H":
-println(Hi.get("Hi", 0));
-!! Prints 12:
-println(Hi.length("Hi"));
+Println(Hi.getAll("Hi")); !! => Hello World!
+Println(Hi.get("Hi", 0)); !! => H
+Println(Hi.length("Hi")); !! => 12
 ```
 ## List:
 ```javascript
-#include("List");
-!! Including the List Module
+#Include("List"); !! Including the List Module
 void Hi := List();
-Hi.new("Hi");
-!! Creating a new List and setting the name to "Hi"
+Hi.new("Hi"); !! Creating a new List and setting the name to "Hi"
+!! Inserting new elements at a certain index:
 Hi.insert("Hi", 0, "Hello");
 Hi.insert("Hi", 0, "Hello");
 Hi.insert("Hi", 1, "Hi");
 Hi.insert("Hi", 2, "Ello");
-Hi.insert("Hi", 3, "Hiya");
-!! Inserting new elements at a certain index
-println(Hi.getAll("Hi"));
-!! Prints "Hello,Hi,Ello,Hiya"
+Hi.insert("Hi", 3, "Hiya"); 
+Println(Hi.getAll("Hi")); !! => "Hello,Hi,Ello,Hiya"
 !! To remove a value you can do either: 
 Hi.remove("Hi", "Hi");
 !! Or:
 Hi.remove("Hi", 1);
 !! They both remove "Hi";
-println(Hi.getAll("Hi"));
-!! Prints "Hello,Ello,Hiya"
-println(Hi.get("Hi", 2));
-!! Prints "Hiya"
-println(Hi.length("Hi"));
-!! Prints 2
+Println(Hi.getAll("Hi")); !! => "Hello,Ello,Hiya"
+Println(Hi.get("Hi", 2)); !! => "Hiya"
+Println(Hi.length("Hi")); !! => 2
 ```
 
 # Projects:
@@ -259,8 +241,8 @@ fn fib(n) := {
   if (n <= 1) rtn 1;
   rtn fib(n - 1) + fib(n - 2);
 }
-void n := ask("How many numbers?");
+void n := Ask("How many numbers?");
 for(void i := 0; i < n; i++) {
-    println(fib(i));
+    Println(fib(i));
 }
 ```

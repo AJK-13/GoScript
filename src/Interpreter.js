@@ -20,7 +20,7 @@ function interpreter(trees, penvironment = null) {
   var environment = new Environment();
   environment.define(
     0,
-    "println",
+    "Println",
     new FuncCallable(
       1,
       (args) => {
@@ -32,7 +32,7 @@ function interpreter(trees, penvironment = null) {
   );
   environment.define(
     0,
-    "print",
+    "Print",
     new FuncCallable(
       1,
       (args) => {
@@ -44,7 +44,7 @@ function interpreter(trees, penvironment = null) {
   );
   environment.define(
     0,
-    "include",
+    "Include",
     new FuncCallable(
       1,
       (args) => {
@@ -56,7 +56,7 @@ function interpreter(trees, penvironment = null) {
   );
   environment.define(
     0,
-    "ask",
+    "Ask",
     new FuncCallable(
       1,
       (args) => {

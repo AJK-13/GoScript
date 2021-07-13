@@ -3,7 +3,6 @@ let reserved = [
   // Variables
   "void",
   "final",
-  "ask",
 
   // Functions
   "fn",
@@ -32,11 +31,14 @@ let reserved = [
   "continue",
 
   // Print
-  "println",
-  "print",
+  "Println",
+  "Print",
 
+  // Ask
+  "Ask",
+  
   // Include
-  "include",
+  "Include",
 ].reduce((prev, curr) => {
   prev[curr] = curr.toUpperCase();
   return prev;
