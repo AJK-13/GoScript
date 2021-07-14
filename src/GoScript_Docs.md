@@ -51,7 +51,7 @@ Hi("Param");
 ```
 ## Lambda:
 ```javascript
-void add := lambda (a, b): a + b;
+void add := (a, b) -> a + b;
 Println(add(1, 2)); !! => 3
 ```
 # Class declaration:

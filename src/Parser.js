@@ -329,22 +329,19 @@ function parser(tokens) {
   }
 
   function expression() {
-    if (match("LAMBDA")) {
-      consume("LEFT_PAREN", "Expect '(' after lambda statement.");
-
+    if (match("LEFT_PAREN")) {
       let line = previous().line;
       let params = [];
       if (!check("RIGHT_PAREN")) {
         do {
           params.push(peek());
-          consume("IDENTIFIER", "Expect parameter name.");
+          consume("IDENTIFIER", "Expected parameter name");
         } while (match("COMMA"));
       }
-      consume("RIGHT_PAREN", "Expect ')' after lambda parameters.");
-      consume("COL", "Expect ':' after right parentheses.");
-
+      consume("RIGHT_PAREN", "Expected ')' after lambda parameters");
+      consume("MINUS", "Expected '->' after ')'");
+      consume("GREATER", "Expected '->' after ')'");
       let rtnVal = expression();
-
       return { type: "lambda", line, params, rtnVal };
     }
     if (match("LEFT_BRACK")) {

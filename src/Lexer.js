@@ -6,7 +6,6 @@ let reserved = [
 
   // Functions
   "fn",
-  "lambda",
   "rtn",
 
   // Classes
@@ -36,7 +35,7 @@ let reserved = [
 
   // Ask
   "Ask",
-  
+
   // Include
   "Include",
 ].reduce((prev, curr) => {
