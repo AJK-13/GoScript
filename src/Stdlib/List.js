@@ -1,50 +1,48 @@
 const { ClassCallable } = require("../Classes");
 const { NativeCallable } = require("../Functions");
 const Environment = require("../Environment");
-var environment = new Environment();
 let nativeclss = new ClassCallable(
   "List",
   {
-    new: new NativeCallable(
-      1,
-      ["any"],
+    init: new NativeCallable(
+      0,
+      [],
       new Environment(),
-      (args) => {
-        return environment.define(0, args[0], new Array(0), "void");
+      (_, environment) => {
+        environment.getVal(0, "this").fields.nativerl = new Array(0);
       },
       false
     ),
-
     length: new NativeCallable(
-      1,
-      ["any"],
+      0,
+      [],
       new Environment(),
-      (args) => {
-        let val = environment.getVal(0, args[0]);
+      (_, environment) => {
+        let val = environment.getVal(0, "this").fields.nativerl;
         return val.length;
       },
       false
     ),
     insert: new NativeCallable(
-      3,
-      ["any"],
+      2,
+      ["position", "text"],
       new Environment(),
-      (args) => {
-        let inname = environment.getVal(0, args[0]);
-        inname[args[1]] = args[2];
+      (args, environment) => {
+        let inname = environment.getVal(0, "this").fields.nativerl;
+        inname[args[0]] = args[1];
         return inname;
       },
       false
     ),
     remove: new NativeCallable(
-      2,
-      ["any"],
+      1,
+      ["position"],
       new Environment(),
-      (args) => {
-        let rename = environment.getVal(0, args[0]);
-        let index = rename.indexOf(args[1]);
+      (args, environment) => {
+        let rename = environment.getVal(0, "this").fields.nativerl;
+        let index = rename.indexOf(args[0]);
         if (index == -1) {
-          index = args[1];
+          index = args[0];
         }
         reval = rename.splice(index, 1);
         return rename;
@@ -52,21 +50,21 @@ let nativeclss = new ClassCallable(
       false
     ),
     get: new NativeCallable(
-      2,
-      ["any"],
+      1,
+      ["position"],
       new Environment(),
-      (args) => {
-        let val = environment.getVal(0, args[0]);
-        return val[args[1]];
+      (args, environment) => {
+        let val = environment.getVal(0, "this").fields.nativerl;
+        return val[args[0]];
       },
       false
     ),
     getAll: new NativeCallable(
-      1,
-      ["any"],
+      0,
+      [],
       new Environment(),
-      (args) => {
-        let val = environment.getVal(0, args[0]);
+      (_, environment) => {
+        let val = environment.getVal(0, "this").fields.nativerl;
         return val;
       },
       false
@@ -75,4 +73,5 @@ let nativeclss = new ClassCallable(
   null,
   null
 );
-module.exports = { lib: nativeclss, name: "List" };
+let lib = nativeclss;
+module.exports = { lib, name: "List" };

@@ -187,7 +187,7 @@ while(true) {
  # Ternary:
 ```javascript
 void n := 2;
-void output := n == 1 | n == 2 ? 1 : 2;
+void output := n == 2 ? "true" : "false";
 Println(output);
 ```
  # Return Statement:
@@ -205,33 +205,30 @@ Println(Hi); !! => 2337
 ## Fiber:
 ```javascript
 #Include("Fiber"); !! Including the Fiber Module
-void Hi := Fiber(); !! Creating a new Fiber and setting the value to "":
-Hi.new("Hi", ""); !! Changing the value to "Hello World!":
-Hi.new("Hi", "Hello World!");
-Println(Hi.getAll("Hi")); !! => Hello World!
-Println(Hi.get("Hi", 0)); !! => H
-Println(Hi.length("Hi")); !! => 12
+void Hi := Fiber(); !! Creating a new Fiber
+Hi.set("Hello World!"); !! Changing the value to "Hello World!"
+Println(Hi.getAll()); !! => Hello World!
+Println(Hi.get(0)); !! => H
+Println(Hi.length()); !! => 12
 ```
 ## List:
 ```javascript
 #Include("List"); !! Including the List Module
 void Hi := List();
-Hi.new("Hi"); !! Creating a new List and setting the name to "Hi"
 !! Inserting new elements at a certain index:
-Hi.insert("Hi", 0, "Hello");
-Hi.insert("Hi", 0, "Hello");
-Hi.insert("Hi", 1, "Hi");
-Hi.insert("Hi", 2, "Ello");
-Hi.insert("Hi", 3, "Hiya"); 
-Println(Hi.getAll("Hi")); !! => "Hello,Hi,Ello,Hiya"
+Hi.insert(0, "Hello");
+Hi.insert(1, "Hi");
+Hi.insert(2, "Ello");
+Hi.insert(3, "Hiya");
+Println(Hi.getAll()); !! => "Hello,Hi,Ello,Hiya"
 !! To remove a value you can do either: 
-Hi.remove("Hi", "Hi");
+Hi.remove("Hi");
 !! Or:
-Hi.remove("Hi", 1);
+Hi.remove(1);
 !! They both remove "Hi";
-Println(Hi.getAll("Hi")); !! => "Hello,Ello,Hiya"
-Println(Hi.get("Hi", 2)); !! => "Hiya"
-Println(Hi.length("Hi")); !! => 2
+Println(Hi.getAll()); !! => "Hello,Ello,Hiya"
+Println(Hi.get(2)); !! => "Hiya"
+Println(Hi.length()); !! => 2
 ```
 
 # Projects:

@@ -6,10 +6,17 @@ class Environment {
     this.values = {};
   }
 
+  // getVal(line, name) {
+  //   if (this.values[name] !== undefined) return this.values[name].value;
+  //   if (this.previous != null) return this.previous.getVal(line, name);
+  //   error(line, "Runtime Error", name + " is not defined");
+  // }
   getVal(line, name) {
     if (this.values[name] !== undefined) return this.values[name].value;
+
+    // No need for .value here because of the preceding line
     if (this.previous != null) return this.previous.getVal(line, name);
-    error(line, "Runtime Error", name + " is not defined");
+    error(line, name + " is not defined.");
   }
 
   checkVal(line, name) {

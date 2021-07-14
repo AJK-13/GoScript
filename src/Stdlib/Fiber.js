@@ -1,46 +1,53 @@
 const { ClassCallable } = require("../Classes");
 const { NativeCallable } = require("../Functions");
 const Environment = require("../Environment");
-var environment = new Environment();
 let nativeclss = new ClassCallable(
   "Fiber",
   {
-    new: new NativeCallable(
-      2,
-      ["any"],
+    init: new NativeCallable(
+      0,
+      [],
       new Environment(),
-      (args) => {
-        return environment.define(0, args[0], String(args[1]), "void");
+      (_, environment) => {
+        environment.getVal(0, "this").fields.nativerl = new String();
       },
       false
     ),
-
     length: new NativeCallable(
-      1,
-      ["any"],
+      0,
+      [],
       new Environment(),
-      (args) => {
-        let val = environment.getVal(0, args[0]);
+      (_, environment) => {
+        let val = environment.getVal(0, "this").fields.nativerl;
         return val.length;
       },
       false
     ),
-    get: new NativeCallable(
-      2,
-      ["any"],
+    set: new NativeCallable(
+      1,
+      ["value"],
       new Environment(),
-      (args) => {
-        let val = environment.getVal(0, args[0]);
-        return val[args[1]];
+      (args, environment) => {
+        environment.getVal(0, "this").fields.nativerl = String(args[0]);
+      },
+      false
+    ),
+    get: new NativeCallable(
+      1,
+      ["position"],
+      new Environment(),
+      (args, environment) => {
+        let val = environment.getVal(0, "this").fields.nativerl;
+        return val[args[0]];
       },
       false
     ),
     getAll: new NativeCallable(
-      1,
-      ["any"],
+      0,
+      [],
       new Environment(),
-      (args) => {
-        let val = environment.getVal(0, args[0]);
+      (_, environment) => {
+        let val = environment.getVal(0, "this").fields.nativerl;
         return val;
       },
       false
@@ -49,4 +56,5 @@ let nativeclss = new ClassCallable(
   null,
   null
 );
-module.exports = { lib: nativeclss, name: "Fiber" };
+let lib = nativeclss;
+module.exports = { lib, name: "Fiber" };
